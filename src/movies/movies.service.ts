@@ -11,9 +11,10 @@ export class MoviesService {
     getAll():Movie[]{
         return this.movies;
     }
-    getOne(id:string):Movie{
+    getOne(id:number):Movie{
+        console.log(id);
         //+는 스트링을 +로 만들어준다
-        const movie =  this.movies.find(movie=>movie.id===+id);
+        const movie =  this.movies.find(movie=>movie.id===id);
         if(!movie){
             throw new NotFoundException(`Movie with ID ${id} not found.`);
         }
@@ -21,9 +22,9 @@ export class MoviesService {
         return movie;
 
     } 
-    deleteOne(id:string){
+    deleteOne(id:number){
         this.getOne(id)
-        this.movies = this.movies.filter(movie=>movie.id!==+id);
+        this.movies = this.movies.filter(movie=>movie.id!==id);
 
     }
     create(movieData:CreateMovieDto){
@@ -34,7 +35,7 @@ export class MoviesService {
         console.log(this.movies);
     }
 
-    update(id:string,updateData:UpdateMovieDto){
+    update(id:number,updateData:UpdateMovieDto){
         const movie = this.getOne(id);
         this.deleteOne(id);
         this.movies.push({...movie,...updateData});
