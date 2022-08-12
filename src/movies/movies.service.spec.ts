@@ -11,12 +11,24 @@ describe('MoviesService', () => {
       providers: [MoviesService],
     }).compile();
 
+    //테스트 실행시 마다 service.create
+    /*
+    service.create({
+      title:"Test Movie",
+      genres:["test"],
+      year:2000,
+    });
+  */
     service = module.get<MoviesService>(MoviesService);
   });
 
+
+  
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+
 
   describe("getAll",()=>{
 
@@ -25,6 +37,8 @@ describe('MoviesService', () => {
       expect(result).toBeInstanceOf(Array);
     })
   })
+
+
 
   describe("getOne",()=>{
     it("should return a movie",()=>{
@@ -83,6 +97,31 @@ describe('MoviesService', () => {
       expect(afterCreate).toBeGreaterThan(beforeCreate);
     })
   })
+
+
+  describe("update",()=>{
+    it("should update a movie",()=>{
+      service.create({
+        title:"Test Movie",
+        genres:["test"],
+        year:2000,
+      });
+      service.update("1",{title:"Updated Test"});
+      const movie = service.getOne("1");
+      expect(movie.title).toEqual("Updated Test");
+
+    })
+
+
+    it("should throw notFoundException",()=>{
+      try{
+        service.update("999",{})
+
+      }catch(e){
+        expect(e).toBeInstanceOf(NotFoundException)
+      }
+    })
+  })
   
-  
+
 });
